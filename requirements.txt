@@ -1,0 +1,8 @@
+werobot
+tinydb
+yarl
+apscheduler
+aiohttp
+feedparser
+tenacity
+loguru
