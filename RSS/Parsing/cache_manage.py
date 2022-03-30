@@ -81,35 +81,6 @@ async def duplicate_exists(
     sql = "SELECT * FROM main WHERE 1=1"
     args = []
     for mode in rss.duplicate_filter_mode:
-        if mode == "image":
-            try:
-                summary_doc = Pq(summary)
-            except Exception as e:
-                logger.warning(e)
-                # 没有正文内容直接跳过
-                continue
-            img_doc = summary_doc("img")
-            # 只处理仅有一张图片的情况
-            if len(img_doc) != 1:
-                continue
-            url = img_doc.attr("src")
-            # 通过图像的指纹来判断是否实际是同一张图片
-            content = await download_image(url, rss.img_proxy)
-            if not content:
-                continue
-            try:
-                im = Image.open(BytesIO(content))
-            except UnidentifiedImageError:
-                continue
-            item["image_content"] = content
-            # GIF 图片的 image_hash 实际上是第一帧的值，为了避免误伤直接跳过
-            if im.format == "GIF":
-                item["gif_url"] = url
-                continue
-            image_hash = str(imagehash.dhash(im))
-            logger.debug(f"image_hash: {image_hash}")
-            sql += " AND image_hash=?"
-            args.append(image_hash)
         if mode == "link":
             sql += " AND link=?"
             args.append(link)

@@ -1,21 +1,18 @@
 from pathlib import Path
 from typing import Any, List
 
-from nonebot import get_driver
-from nonebot.config import BaseConfig
-from nonebot.log import logger
 from pydantic import AnyHttpUrl, Extra
 
 DATA_PATH = Path.cwd() / "data"
 JSON_PATH = DATA_PATH / "rss.json"
 # TODO:可以改为非对象形式
 
-class ELFConfig(BaseConfig):
+class ELFConfig():
     class Config:
         extra = Extra.allow
 
     rss_proxy: str = ""
-    rsshub: AnyHttpUrl = "https://rsshub.app"  # type: ignore
+    rsshub: AnyHttpUrl = "https://rss.shab.fun"  # type: ignore
     rsshub_backup: List[AnyHttpUrl] = []
     db_cache_expire = 30
     limit = 50
@@ -48,5 +45,4 @@ class ELFConfig(BaseConfig):
         return None
 
 
-config = ELFConfig(**get_driver().config.dict())
-logger.debug(f"RSS Config loaded: {config!r}")
+config = ELFConfig()

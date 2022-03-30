@@ -6,3 +6,6 @@ aiohttp
 feedparser
 tenacity
 loguru
+pydantic
+arrow
+pyquery

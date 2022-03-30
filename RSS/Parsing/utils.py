@@ -1,7 +1,7 @@
 import re
 from typing import Any, Dict, Optional
 
-from ....config import config
+from ..config import config
 
 
 # 代理

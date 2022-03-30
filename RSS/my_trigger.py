@@ -3,12 +3,13 @@ import re
 from apscheduler.executors.pool import ProcessPoolExecutor, ThreadPoolExecutor
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger  # 间隔触发器
-from nonebot import require
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from loguru import logger
 
 from . import rss_parsing, util
 from .rss_class import Rss
-# TODO: 解决nonebot require问题
+
+scheduler=AsyncIOScheduler()
 
 # 检测某个rss更新 #任务体
 @util.time_out(time=300)  # 20s  任务超时时间
@@ -18,9 +19,9 @@ async def check_update(rss: Rss) -> None:
 
 
 def delete_job(rss: Rss) -> None:
-    scheduler = require("nonebot_plugin_apscheduler").scheduler
-    if scheduler.get_job(rss.name):
-        scheduler.remove_job(rss.name)
+    #scheduler = require("nonebot_plugin_apscheduler").scheduler
+    if scheduler.get_job(job_id=rss.name):
+        scheduler.remove_job(job_id=rss.name)
 
 
 def add_job(rss: Rss) -> None:
@@ -34,10 +35,10 @@ def rss_trigger(rss: Rss) -> None:
     if re.search(r"[_*/,-]", rss.time):
         my_trigger_cron(rss)
         return
-    scheduler = require("nonebot_plugin_apscheduler").scheduler
+    #scheduler = require("nonebot_plugin_apscheduler").scheduler
     # 制作一个“time分钟/次”触发器
     trigger = IntervalTrigger(
-        minutes=int(rss.time), jitter=10, timezone="Asia/Shanghai"
+        minutes=int(1), jitter=10, timezone="Asia/Shanghai"
     )
     # 添加任务
     scheduler.add_job(
@@ -78,7 +79,7 @@ def my_trigger_cron(rss: Rss) -> None:
     except Exception:
         logger.exception(f"创建定时器错误！cron:{times_list}")
         return
-    scheduler = require("nonebot_plugin_apscheduler").scheduler
+    #scheduler = require("nonebot_plugin_apscheduler").scheduler
 
     # 添加任务
     scheduler.add_job(
