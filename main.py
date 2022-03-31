@@ -36,6 +36,11 @@ def add(message,session,match):
 
     return "订阅成功！"
 
+@robot.templatesendjobfinish_event
+def _(message):
+    logger.info(message)
+    return None
+
 #robot.run()
 
 import tornado.ioloop

@@ -2,8 +2,7 @@ from typing import Any, Dict
 from loguru import logger
 from ..rss_class import Rss
 from ..bot import client
-
-template='QCS8rG6qmsk0VGhhTBhVhB_0VudFHj7ZlIQRL9x7AOs'
+from ..secret import template
 
 async def send_msg(rss: Rss, msg: Dict[str, Any], item: Dict[str, Any]) -> bool:
     data={
@@ -30,6 +29,7 @@ async def send_msg(rss: Rss, msg: Dict[str, Any], item: Dict[str, Any]) -> bool:
         },
     }
     for user in rss.user_id:
+        logger.info("开始发送")
         ret = client.send_template_message(user,template,data,url=msg['link'])
         if ret["errcode"] != 0:
             logger.error(ret)
