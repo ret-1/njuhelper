@@ -3,13 +3,13 @@ import re
 from apscheduler.executors.pool import ProcessPoolExecutor, ThreadPoolExecutor
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger  # 间隔触发器
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.schedulers.tornado import TornadoScheduler
 from loguru import logger
 
 from . import rss_parsing, util
 from .rss_class import Rss
 
-scheduler = AsyncIOScheduler()
+scheduler = TornadoScheduler()
 scheduler.start()
 
 # 检测某个rss更新 #任务体

@@ -3,7 +3,7 @@ import re
 from loguru import logger
 from RSS import my_trigger as tr
 from RSS.rss_class import Rss
-from RSS.bot import robot,client
+from RSS.bot import robot
 
 @robot.filter("1")
 def hello_world():
@@ -36,4 +36,14 @@ def add(message,session,match):
 
     return "订阅成功！"
 
-robot.run()
+#robot.run()
+
+import tornado.ioloop
+import tornado.web
+from werobot.contrib.tornado import make_handler
+application = tornado.web.Application([
+    (r"/", make_handler(robot)),
+])
+
+application.listen(80)
+tornado.ioloop.IOLoop.instance().start()
