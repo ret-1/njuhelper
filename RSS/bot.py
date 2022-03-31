@@ -1,5 +1,5 @@
 import werobot
-from secret import TOKEN,APP_ID,APP_SECRET
+from .secret import TOKEN,APP_ID,APP_SECRET
 
 robot = werobot.WeRoBot(token=TOKEN)
 robot.config["APP_ID"] = APP_ID

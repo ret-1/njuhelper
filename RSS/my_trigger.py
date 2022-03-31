@@ -9,7 +9,8 @@ from loguru import logger
 from . import rss_parsing, util
 from .rss_class import Rss
 
-scheduler=AsyncIOScheduler()
+scheduler = AsyncIOScheduler()
+scheduler.start()
 
 # 检测某个rss更新 #任务体
 @util.time_out(time=300)  # 20s  任务超时时间
@@ -38,7 +39,7 @@ def rss_trigger(rss: Rss) -> None:
     #scheduler = require("nonebot_plugin_apscheduler").scheduler
     # 制作一个“time分钟/次”触发器
     trigger = IntervalTrigger(
-        minutes=int(1), jitter=10, timezone="Asia/Shanghai"
+        seconds=int(5), jitter=10, timezone="Asia/Shanghai"
     )
     # 添加任务
     scheduler.add_job(
